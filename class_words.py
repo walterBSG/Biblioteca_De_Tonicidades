@@ -1,13 +1,23 @@
 import io
 import re
+import os
 
-def getText(name = 'pt-wordlist.txt'):
-    text = io.open(name, encoding="utf8").read()
-    text = text.split('\n')
-    return text
+def classText():
+    filenames = next(os.walk('text'), (None, None, []))[2]
+    for file in filenames:
+        text = io.open('text/'+file, encoding="utf8").read().split('\n')
+        ox = getOx(text)
+        prop = getProp(text)
+        par = getPar(text)
+        with open('result/ox_'+file, 'w',encoding="utf8") as f:
+            f.write("\n".join(ox))
+        with open('result/prop_'+file, 'w',encoding="utf8") as f:
+            f.write("\n".join(prop))
+        with open('result/par_'+file, 'w',encoding="utf8") as f:
+            f.write("\n".join(par))
 
 def oxreg():
-    return re.compile("^([A-zÀ-úç-]*-)*[A-zç]*((á|í|ú)s?|(é|ó)(s|i)?|ás?|é(ns|m|u)|ã(s|o|os)?|õ(s|e|es)?|(ú|í)(m|n)?|(i|u)(m|n)|r|l|z|x)(-(lo|la)s?)?$")
+    return re.compile("(^([A-zÀ-úç-]*-)*[A-zç]*((á|í|ú)s?|(é|ó)(s|i)?|ás?|é(ns|m|u)|ã(s|o|os)?|õ(s|e|es)?|(ú|í)(m|n)?|(i|u)(m|n)|r|l|z|x)(-(lo|la)s?)?$|^[a-zA-Z\u00C0-\u00FF]$)")
 
 def propreg():
     return re.compile("^[A-zÀ-úç-]*[À-ú][bcdfghjklmnpqrstvwxysç]+[aeiouy]+[bcdfghjklmnpqrstvwxysç]+[aeiouyãõ]+s?$")
@@ -43,3 +53,9 @@ def getTypes(text):
 
 def getTuples(text):
     return [(word, getType(word)) for word in text]
+
+def main():
+    classText()
+
+if __name__ == '__main__':
+    main()
