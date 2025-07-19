@@ -1,4 +1,4 @@
-# PT_Gram
+# Biblioteca de Tonicidades
 
 This program implements Portuguese grammar rules to detect the accentuation of a word as Proparoxytone, Paroxytone, or Oxytone.
 
